@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+	<title>File Repository</title>
+	<link href="css/angular-bootstrap.css" rel="stylesheet">
+	<style type="text/css">
+		[ng\:cloak], [ng-cloak], .ng-cloak {
+  			display: none !important;
+		}
+	</style>
+</head>
+
+<body ng-app="file-repository">
+	<div class="container">
+    	<h1>File Repository</h1>
+    
+    	<ng-view></ng-view>
+	</div>
+  
+	<script type="text/ng-template" id="/file-list.html">
+		<span ng-hide="fileDescriptors.length">Repository is empty</span>
+		<ul>
+			<li ng-repeat="fd in fileDescriptors">
+				<strong>{{fd.title}}</strong> <small>({{fd.creationDate | date:'short'}})</small> - {{fd.description}} [ <a href="/files/{{fd.id}}">Download</a> | <a href="#/upload/{{fd.id}}">Edit</a> ]
+			</li>
+		</ul>
+		<a href="#/upload/">Upload file</a>
+    </script>
+    
+    <script type="text/ng-template" id="/file-upload.html">
+		<div ng-show="error" style="color:maroon" role="alert">
+    		<div>{{error}}</div>
+    		<br/>
+		</div>
+		
+    	<form name="file-upload-form" class="simple-form">
+    		<input type="hidden" ng-model="fd.id" />
+    		<input type="file" file="file" file-model="file" required />
+    		<br/>
+    		<label>Title:</label> <input type="text" ng-model="fd.title" required />
+    		<br/>
+    		<label>Description:</label> <input type="text" ng-model="fd.description" />
+    		<br/>
+    		<label>Creation Date:</label> <input type="datetime-local" ng-model="fd.creationDate" />
+    		<br/>
+    		<input type="button" class="btn" value="Upload" ng-click="upload()" ng-disabled="!file || !fd.title" />
+    		<a href="#/"><input type="button" class="btn" value="Cancel" /></a>
+    	</form>
+    </script>
+    
+  <script src="js/angular-bootstrap.js" type="text/javascript"></script>
+  <script src="js/file-repository.js"></script>
+</body>
+</html>
